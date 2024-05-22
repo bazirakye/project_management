@@ -3,7 +3,7 @@ import InputLabel from "@/Components/InputLabel"
 import InputError from "@/Components/InputError"
 import TextInput from "@/Components/TextInput"
 import PrimaryButton from "@/Components/PrimaryButton"
-export default function edit({auth, project}){
+export default function edit({auth, projectedit}){
 
     return(
         <AuthenticatedLayout
@@ -20,8 +20,8 @@ export default function edit({auth, project}){
 
                         id="project"
                         type="text"
-                        name="project"
-                        value={ project.name}
+                        name="Name"
+                        value={ projectedit.data.name}
                         className="mt-1 block w-full"
                         // autoComplete="project"
                         isFocused={true}
@@ -31,13 +31,13 @@ export default function edit({auth, project}){
                     <InputError message='' className="mt-2" />
                 </div>
                 <div>
-                    <InputLabel htmlFor="project" value="project" />
+                    <InputLabel htmlFor="description" value="description" />
 
                     <TextInput
-                        id="project"
+                        id="description"
                         type="text"
                         name="project"
-                        value={project.name}
+                        value={projectedit.data.description}
                         className="mt-1 block w-full"
                         // autoComplete="project"
                         isFocused={true}

@@ -51,7 +51,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return Inertia::render('Projects/edit', compact('project'));
+        $projectedit = new ProjectResource($project);
+        return Inertia::render('Projects/edit', compact('projectedit'));
     }
 
     /**
