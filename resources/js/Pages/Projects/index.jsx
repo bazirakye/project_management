@@ -1,9 +1,34 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from '@/constants';
+import TextInput from '@/Components/TextInput';
+import SelectInput from '@/Components/SelectInput';
 
-export default function index({ auth, projects}) {
+export default function index({ auth, projects, queryparams=null,}) {
+    queryparams = queryparams || {};
+
+    const searchFieldChanged = (name, value) => {
+        if (value) {
+            queryparams[name] = value;
+        }else {
+            delete queryparams[name];
+        }
+        router.get(route('projects.index', queryparams));
+    }
+    const onKeyPress = (name, e) => {
+        if (e.key === 'Enter') {
+            searchFieldChanged(name, e.target.value)
+        }else{
+            return;
+        }
+    }
+
+    const sortField = (name) =>{
+        queryparams['sort'] = name;
+        queryparams['order'] = queryparams['order'] === 'asc'? 'desc' : 'asc';
+        router.get(route('projects.index', queryparams));
+    }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -12,22 +37,38 @@ export default function index({ auth, projects}) {
             <Head title="Projects" />
 
             <div className="py-12">
+            <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+                <div class="pb-4 flex flex-wrap">
+                    <div class="flex mx-1 my-px">
+                        <TextInput placeholder="project name" defaultValue = {queryparams.name} onBlur = {e=>searchFieldChanged('name', e.target.value)} onKeyPress = {e => onKeyPress('name', e)}/>
+                    </div>
+                    <div class="flex mx-1 my-px">
+                        <SelectInput className = 'w-full' defaultValue = {queryparams.status} onChange = {e=> searchFieldChanged('status', e.target.value)}>
+                        <option value="">Select status</option>
+                        <option value="pending">Pending</option>
+                        <option value="In_progress">In progress</option>
+                        <option value="completed">Completed</option>
+
+                        </SelectInput>
+                    </div>
+                </div>
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-auto shadow-sm sm:rounded-lg">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-layout: auto">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-layout: auto">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr >
-                                    <th class="px-6 py-3">Project Id</th>
-                                    <th class="px-6 py-3">ProjectName</th>
-                                    <th class="px-6 py-3">Project Description</th>
-                                    <th class="px-6 py-3">Project status</th>
-                                    <th class="px-6 py-3">Image</th>
-                                    <th class="px-6 py-3">Created at</th>
-                                    <th class="px-6 py-3">Due date</th>
-                                    <th class="px-6 py-3">created by</th>
-                                    <th class="px-6 py-3">Updated by</th>
-                                    <th class="px-6 py-3">Action</th>
-
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('id')}>Project Id</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('name')}>ProjectName</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('description')}>Project Description</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('status')}>Project status</th>
+                                    <th className="px-6 py-3">Image</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_at')}>Created at</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('due_date')}>Due date</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_by')}>created by</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('updated_by')}>Updated by</th>
+                                    <th className="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,7 +90,6 @@ export default function index({ auth, projects}) {
                                             <Link href={route('projects.destroy', project.id)} className="font-medium text-red dark:text-red-500 hover:underline mx-1">
                                                 Delete
                                             </Link>
-
                                         </td>
                                     </tr>
                                 ))}
@@ -58,6 +98,7 @@ export default function index({ auth, projects}) {
                     </div>
                     <Pagination links={projects.meta.links}/>
                 </div>
+            </div>
             </div>
         </AuthenticatedLayout>
     );
