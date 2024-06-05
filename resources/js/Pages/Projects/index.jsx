@@ -4,6 +4,7 @@ import Pagination from '@/Components/Pagination';
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from '@/constants';
 import TextInput from '@/Components/TextInput';
 import SelectInput from '@/Components/SelectInput';
+import { BeakerIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
 
 export default function index({ auth, projects, queryparams=null,}) {
     queryparams = queryparams || {};
@@ -59,15 +60,80 @@ export default function index({ auth, projects, queryparams=null,}) {
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-layout: auto">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr >
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('id')}>Project Id</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('name')}>ProjectName</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('description')}>Project Description</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('status')}>Project status</th>
+                                    <th className="px-6 py-3" onClick={(e) => sortField('id')}>
+                                        <div className="flex items-center gap-1 cursor-pointer">
+                                            <span>Id</span>
+                                            <div className="flex flex-col items-center">
+                                                <ChevronUpIcon className={"w-4 "+ (queryparams.sort === 'id' && queryparams.order ==='asc'?'text-white ': '')} />
+                                                <ChevronDownIcon className={"w-4 -mt-2 "+ (queryparams.sort === 'id' && queryparams.order ==='desc'?'text-white ': '')} />
+                                            </div>
+                                        </div>
+                                    </th>
+
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('name')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Project name</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('description')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Project description</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className={"w-4 "+ (queryparams.sortField === 'description' && queryparams.sortDirection ==='asc'?'text-white ': '')} />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('status')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Project Status</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
                                     <th className="px-6 py-3">Image</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_at')}>Created at</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('due_date')}>Due date</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_by')}>created by</th>
-                                    <th className="px-6 py-3" onClick={(e)=>sortField('updated_by')}>Updated by</th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_at')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Created at</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('due_date')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Due Date</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('created_by')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Created by</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th className="px-6 py-3" onClick={(e)=>sortField('updated_by')}>
+                                        <div className="flex items-center cursor-pointer">
+                                            <span>Updated by</span>
+                                            <div className="flex-col ">
+                                                <ChevronUpIcon className="w-4" />
+                                                <ChevronDownIcon className="w-4 -mt-2" />
+                                            </div>
+                                        </div>
+                                    </th>
                                     <th className="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
