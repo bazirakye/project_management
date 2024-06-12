@@ -38,94 +38,94 @@ export default function index({ auth, projects, queryparams=null,}) {
             <Head title="Projects" />
 
             <div className="py-12">
-            <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
-                <div class="pb-4 flex flex-wrap">
-                    <div class="flex mx-1 my-px">
-                        <TextInput placeholder="project name" defaultValue = {queryparams.name} onBlur = {e=>searchFieldChanged('name', e.target.value)} onKeyPress = {e => onKeyPress('name', e)}/>
+                    <div class="pb-4 flex flex-wrap">
+                        <div class="flex mx-1 my-px">
+                            <TextInput placeholder="project name" defaultValue = {queryparams.name} onBlur = {e=>searchFieldChanged('name', e.target.value)} onKeyPress = {e => onKeyPress('name', e)}/>
+                        </div>
+                        <div class="flex mx-1 my-px">
+                            <SelectInput className = 'w-full' defaultValue = {queryparams.status} onChange = {e=> searchFieldChanged('status', e.target.value)}>
+                            <option value="">Select status</option>
+                            <option value="pending">Pending</option>
+                            <option value="In_progress">In progress</option>
+                            <option value="completed">Completed</option>
+
+                            </SelectInput>
+                        </div>
                     </div>
-                    <div class="flex mx-1 my-px">
-                        <SelectInput className = 'w-full' defaultValue = {queryparams.status} onChange = {e=> searchFieldChanged('status', e.target.value)}>
-                        <option value="">Select status</option>
-                        <option value="pending">Pending</option>
-                        <option value="In_progress">In progress</option>
-                        <option value="completed">Completed</option>
 
-                        </SelectInput>
-                    </div>
-                </div>
+                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div className="bg-white dark:bg-gray-800 overflow-auto shadow-sm sm:rounded-lg">
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-layout: auto">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr >
+                                        <TableHead name={'id'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            ID
+                                        </TableHead>
 
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-auto shadow-sm sm:rounded-lg">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-layout: auto">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr >
-                                    <TableHead name={'id'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        ID
-                                    </TableHead>
+                                        <TableHead name={'name'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Project name
+                                        </TableHead>
 
-                                    <TableHead name={'name'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Project name
-                                    </TableHead>
+                                        <TableHead name={'description'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Description
+                                        </TableHead>
 
-                                    <TableHead name={'description'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Description
-                                    </TableHead>
+                                        <TableHead name={'status'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Status
+                                        </TableHead>
 
-                                    <TableHead name={'status'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Status
-                                    </TableHead>
+                                        <TableHead name={'image'} sortable = {false} >
+                                            Image
+                                        </TableHead>
 
-                                    <TableHead name={'image'} sortable = {false} >
-                                        Image
-                                    </TableHead>
+                                        <TableHead name={'created_at'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Created at
+                                        </TableHead>
 
-                                    <TableHead name={'created_at'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Created at
-                                    </TableHead>
+                                        <TableHead name={'due_date'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Due date
+                                        </TableHead>
 
-                                    <TableHead name={'due_date'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Due date
-                                    </TableHead>
+                                        <TableHead name={'created_by'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Created by
+                                        </TableHead>
 
-                                    <TableHead name={'created_by'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Created by
-                                    </TableHead>
-
-                                    <TableHead name={'updated_by'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
-                                        Updated by
-                                    </TableHead>
-                                    <th className="px-6 py-3">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {projects.data.map((project) =>(
-                                    <tr bg-white border-b dark:bg-gray-800 dark:border-gray-700  key={project.id}>
-                                        <td className='text-center'>{project.id}</td>
-                                        <td>{project.name}</td>
-                                        <td>{project.description}</td>
-                                        <td><span className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</span></td>
-                                        <td><img class="rounded-full w-20 h-20" src={project.image_path}/></td>
-                                        <td>{project.created_at}</td>
-                                        <td>{project.due_date}</td>
-                                        <td>{project.created_by.name}</td>
-                                        <td>{project.updated_by.name}</td>
-                                        <td>
-                                            <Link href={route('projects.edit', project.id)} className="font-medium text-blue dark:text-blue-500 hover:underline mx-1">
-                                                Edit
-                                            </Link>
-                                            <Link href={route('projects.destroy', project.id)} className="font-medium text-red dark:text-red-500 hover:underline mx-1">
-                                                Delete
-                                            </Link>
-                                        </td>
+                                        <TableHead name={'updated_by'} sort={queryparams.sort} order={queryparams.order} sort_field = {sortField}>
+                                            Updated by
+                                        </TableHead>
+                                        <th className="px-6 py-3">Action</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {projects.data.map((project) =>(
+                                        <tr bg-white border-b dark:bg-gray-800 dark:border-gray-700  key={project.id}>
+                                            <td className='text-center'>{project.id}</td>
+                                            <td>{project.name}</td>
+                                            <td>{project.description}</td>
+                                            <td><span className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[project.status]}>{PROJECT_STATUS_TEXT_MAP[project.status]}</span></td>
+                                            <td><img class="rounded-full w-20 h-20" src={project.image_path}/></td>
+                                            <td>{project.created_at}</td>
+                                            <td>{project.due_date}</td>
+                                            <td>{project.created_by.name}</td>
+                                            <td>{project.updated_by.name}</td>
+                                            <td>
+                                                <Link href={route('projects.edit', project.id)} className="font-medium text-blue dark:text-blue-500 hover:underline mx-1">
+                                                    Edit
+                                                </Link>
+                                                <Link href={route('projects.destroy', project.id)} className="font-medium text-red dark:text-red-500 hover:underline mx-1">
+                                                    Delete
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <Pagination links={projects.meta.links}/>
                     </div>
-                    <Pagination links={projects.meta.links}/>
                 </div>
-            </div>
             </div>
         </AuthenticatedLayout>
     );
